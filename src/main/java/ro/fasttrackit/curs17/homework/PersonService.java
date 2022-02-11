@@ -60,7 +60,7 @@ public class PersonService {
     //list all persons with 18 < age < 60
     public List<Person> listPersonsWithinAgeInterval() {
         return persons.stream()
-                .filter(person -> person.age() > 18 && person.age() < 60)
+                .filter(person -> person.age() >= 18 && person.age() <= 60)
                 .collect(toList());
     }
 
