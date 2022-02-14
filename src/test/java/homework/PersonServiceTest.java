@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import ro.fasttrackit.curs17.homework.Person;
 import ro.fasttrackit.curs17.homework.PersonService;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.assertj.core.api.Assertions.*;
 
 import java.util.*;
@@ -19,9 +21,9 @@ public class PersonServiceTest {
                 new Person("Mara","Molid",18,"Iasi")));
         PersonService personService = new PersonService(persons);
 
-        List<String> result = Arrays.asList("Alin Brad", "Andra Fag", "Mara Molid");
+        List<String> expected = Arrays.asList("Alin Brad", "Andra Fag", "Mara Molid");
         //RUN + ASSERT
-        assertThat(personService.listNames()).isEqualTo(result);
+        assertThat(personService.listNames()).isEqualTo(expected);
     }
 
     @Test
@@ -33,11 +35,11 @@ public class PersonServiceTest {
                 new Person("Mara","Molid",18,"Iasi")));
         PersonService personService = new PersonService(persons);
 
-        List<Person> result = new ArrayList<>(List.of(new Person("Alin","Brad",44,"Cluj"),
+        List<Person> expected = new ArrayList<>(List.of(new Person("Alin","Brad",44,"Cluj"),
                 new Person("Mara","Molid",18,"Iasi")));
 
         //RUN + ASSERT
-        assertThat(personService.listMajorPersons()).isEqualTo(result);
+        assertThat(personService.listMajorPersons()).isEqualTo(expected);
     }
 
     @Test
@@ -49,10 +51,10 @@ public class PersonServiceTest {
                 new Person("Mara","Molid",18,"Iasi")));
         PersonService personService = new PersonService(persons);
 
-        List<Person> result = new ArrayList<>(List.of(new Person("Andra","Fag",14,"Oradea")));
+        List<Person> expected = new ArrayList<>(List.of(new Person("Andra","Fag",14,"Oradea")));
 
         //RUN + ASSERT
-        assertThat(personService.listOradeanPeople()).isEqualTo(result);
+        assertThat(personService.listOradeanPeople()).isEqualTo(expected);
     }
 
     @Test
@@ -64,11 +66,11 @@ public class PersonServiceTest {
                 new Person("Mara","Molid",18,"Iasi")));
         PersonService personService = new PersonService(persons);
 
-        List<Person> result = new ArrayList<>(List.of(new Person("Alin","Brad",44,"Cluj"),
+        List<Person> expected = new ArrayList<>(List.of(new Person("Alin","Brad",44,"Cluj"),
                 new Person("Andra","Fag",14,"Oradea")));
 
         //RUN + ASSERT
-        assertThat(personService.listOradeaOrClujPeople()).isEqualTo(result);
+        assertThat(personService.listOradeaOrClujPeople()).isEqualTo(expected);
     }
 
     @Test
@@ -80,10 +82,10 @@ public class PersonServiceTest {
                 new Person("Mara","Molid",18,"Iasi")));
         PersonService personService = new PersonService(persons);
 
-        List<String> result =  Arrays.asList("ALIN","ANDRA","MARA");
+        List<String> expected =  Arrays.asList("ALIN","ANDRA","MARA");
 
         //RUN + ASSERT
-        assertThat(personService.listFirstNamesCapitalized()).isEqualTo(result);
+        assertThat(personService.listFirstNamesCapitalized()).isEqualTo(expected);
     }
 
     @Test
@@ -95,10 +97,10 @@ public class PersonServiceTest {
                 new Person("Mara","Molid",18,"Iasi")));
         PersonService personService = new PersonService(persons);
 
-        List<String> result =  Arrays.asList("Alin B","Andra F","Mara M");
+        List<String> expected =  Arrays.asList("Alin B","Andra F","Mara M");
 
         //RUN + ASSERT
-        assertThat(personService.listAbbreviatedNames()).isEqualTo(result);
+        assertThat(personService.listAbbreviatedNames()).isEqualTo(expected);
     }
 
     @Test
@@ -109,10 +111,10 @@ public class PersonServiceTest {
                 new Person("Mara","Molid",18,"Iasi")));
         PersonService personService = new PersonService(persons);
 
-        List<Person> result = new ArrayList<>(List.of(new Person("Mara","Molid",18,"Iasi")));
+        List<Person> expected = new ArrayList<>(List.of(new Person("Mara","Molid",18,"Iasi")));
 
         //RUN + ASSERT
-        assertThat(personService.listPersonsWithinAgeInterval()).isEqualTo(result);
+        assertThat(personService.listPersonsWithinAgeInterval()).isEqualTo(expected);
     }
 
     @Test
@@ -123,11 +125,11 @@ public class PersonServiceTest {
                 new Person("Mara","Molid",18,"Iasi")));
         PersonService personService = new PersonService(persons);
 
-        List<Person> result = new ArrayList<>(List.of(new Person("Alin","Brad",99,"Cluj"),
+        List<Person> expected = new ArrayList<>(List.of(new Person("Alin","Brad",99,"Cluj"),
                 new Person("Andra","Fag",14,"Oradea")));
 
         //RUN + ASSERT
-        assertThat(personService.listPersonsWithFirstLetterA()).isEqualTo(result);
+        assertThat(personService.listPersonsWithFirstLetterA()).isEqualTo(expected);
     }
 
     @Test
@@ -138,14 +140,14 @@ public class PersonServiceTest {
                 new Person("Andra","Molid",18,"Iasi")));
         PersonService personService = new PersonService(persons);
 
-        Set<String> result = new HashSet<>(Arrays.asList("Alin","Andra"));
+        Set<String> expected = new HashSet<>(Arrays.asList("Alin","Andra"));
 
         //RUN + ASSERT
-        assertThat(personService.listFirstNamesUniquely()).isEqualTo(result);
+        assertThat(personService.listFirstNamesUniquely()).isEqualTo(expected);
     }
 
     @Test
-    @DisplayName("WHEN... return sorted")
+    @DisplayName("WHEN you have a List<Person> THEN sort by first name/last name/name and age")
     void testSortByNameAndAge() {
         //SETUP
         List<Person> persons = new ArrayList<>(List.of(new Person("Mircea","Brad",44,"Cluj"),
@@ -153,12 +155,55 @@ public class PersonServiceTest {
                 new Person("Andra","Fag",18,"Iasi")));
         PersonService personService = new PersonService(persons);
 
-        List<Person> result = new ArrayList<>(List.of(
-                new Person("Andra","Fag",34,"Iasi"),
-                new Person("Andra","Fag",18,"Oradea"),
+        List<Person> expected = new ArrayList<>(List.of(
+                new Person("Andra","Fag",18,"Iasi"),
+                new Person("Andra","Fag",34,"Oradea"),
                 new Person("Mircea","Brad",44,"Cluj")
         ));
+        assertThat(personService.sortByFirstName()).isEqualTo(List.of(
+                new Person("Andra","Fag",34,"Oradea"),
+                new Person("Andra","Fag",18,"Iasi") ,
+                new Person("Mircea","Brad",44,"Cluj")
+        ));
+        assertThat(personService.sortByLastName()).isEqualTo(List.of(
+                new Person("Mircea","Brad",44,"Cluj"),
+                new Person("Andra","Fag",34,"Oradea"),
+                new Person("Andra","Fag",18,"Iasi")
+        ));
+        assertThat(personService.sortByNameAndAge()).isEqualTo(expected);
+    }
 
-//        assertThat(personService.sortByNameAndAge().
+
+    @Test
+    @DisplayName("WHEN null or empty fileds are given THEN throw exception")
+    void testNullFields() {
+        IllegalArgumentException exc1 = assertThrows(IllegalArgumentException.class,
+                () -> new Person(null, "Marian",13,"Cluj"));
+        assertThat(exc1.getMessage()).isEqualTo("Null or empty word is not accepted!");
+
+        IllegalArgumentException exc2 = assertThrows(IllegalArgumentException.class,
+                () -> new Person("Amalia",null,11,"Iasi"));
+        assertThat(exc2.getMessage()).isEqualTo("Null or empty word is not accepted!");
+
+        IllegalArgumentException exc3 = assertThrows(IllegalArgumentException.class,
+                ()-> new Person("Mihai","Suciu",88,null));
+        assertThat(exc3.getMessage()).isEqualTo("Null or empty word is not accepted!");
+
+        IllegalArgumentException exc4 = assertThrows(IllegalArgumentException.class,
+                ()-> new Person("Ingrid","Costea",-55,"Timisoara"));
+        assertThat(exc4.getMessage()).isEqualTo("Age is not valid!");
+    }
+
+    @Test
+    @DisplayName("WHEN null list or list containing null element is given THEN throw exception")
+    void testNullList() {
+        IllegalArgumentException exc1 = assertThrows(IllegalArgumentException.class,
+                ()-> new PersonService(null));
+        assertThat(exc1.getMessage()).isEqualTo("Null list or null element in list not accepted!");
+
+        IllegalArgumentException exc2 = assertThrows(IllegalArgumentException.class,
+                ()-> new PersonService(List.of(
+                        new Person("Anca","Mar",44,"Cluj"))));
+        assertThat(exc2.getMessage()).isEqualTo("Null list or null element in list not accepted!");
     }
 }

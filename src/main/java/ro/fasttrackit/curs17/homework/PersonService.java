@@ -10,8 +10,10 @@ public class PersonService {
     private final List<Person> persons = new ArrayList<>();
 
     public PersonService(List<Person> persons) {
-        if (persons != null) {
+        if (persons != null && !persons.contains(null)) {
             this.persons.addAll(persons);
+        } else {
+            throw new IllegalArgumentException("Null list or null element in list not accepted!");
         }
     }
     //list all the persons names: firstName lastName
@@ -53,7 +55,7 @@ public class PersonService {
     //list all person names: firstName firstletter from last name: Stefan B
     public List<String> listAbbreviatedNames() {
         return persons.stream()
-                .map(person -> person.firstName() + " " + Character.toString(person.lastName().charAt(0)))
+                .map(person -> person.firstName() + " " + (person.lastName().charAt(0)))
                 .collect(toList());
     }
 
